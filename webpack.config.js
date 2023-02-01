@@ -1,4 +1,5 @@
 const path = require("path"); // we cannot use import key word in webpack so going the old ways
+const TerserPlugin = require("terser-webpack-plugin"); // it comes with webpack 5, we donot need to install it explicitly
 module.exports = {
   entry: "./src/index.js", //webpack entry point, webpack will start build process from this file
   output: {
@@ -64,4 +65,8 @@ module.exports = {
       }
     ],
   },
+
+  plugins:[
+    new TerserPlugin()
+  ]
 };
