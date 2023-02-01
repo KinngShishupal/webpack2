@@ -12,10 +12,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hello_world_button_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 
 class HelloWorldButton {
+    buttonCssClass ='hello-world-button' // to test babel as most browsers doesnot allow class properties they only support methods
     render(){
         const button = document.createElement('button');
         button.innerHTML = 'Hello World';
-        button.classList.add('hello-world-button')
+        button.classList.add(this.buttonCssClass)
         button.onclick = function () {
              const  p  = document.createElement('p');
              p.innerHTML = 'Hello World';

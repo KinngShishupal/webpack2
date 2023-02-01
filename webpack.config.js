@@ -50,6 +50,17 @@ module.exports = {
    use: ["style-loader",
          "css-loader",
          "sass-loader" ], // loaders  are invoked from right to left so firt sass loader then css loader then style loader
+      },
+      {
+        test:/\/.js$/,
+        exclude:/node_modules/, // applies to all js files except located inside node modules
+        use:{
+          loader:'babel-loader',
+          options:{ // we can extra options to every loader provided it support that option
+            preset: ["@babel/env"], // compoles ecmascript above 5 to 5
+            plugins: ["@babel/plugin-proposal-class-properties"]
+          }
+        }
       }
     ],
   },
