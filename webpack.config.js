@@ -38,6 +38,13 @@ module.exports = {
         test: /\.txt/,
         type: "asset/source",
       },
+      {
+        // rule for importing css files, here we will use loaders instead of asset module so we will use keyword use instead of type 
+        // this rule tells webpack to use css loader and style loader we desire to import css file
+        test: /\.css$/,
+        use: ["style-loader",
+         "css-loader"]
+      }
     ],
   },
 };
