@@ -44,6 +44,12 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader",
          "css-loader"]
+      },
+      {
+        test:/\.scss$/, 
+   use: ["style-loader",
+         "css-loader",
+         "sass-loader" ], // loaders  are invoked from right to left so firt sass loader then css loader then style loader
       }
     ],
   },

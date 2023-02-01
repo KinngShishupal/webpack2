@@ -1,0 +1,14 @@
+$font-size:30px;
+$background-color-btn:pink;
+
+.hello-world-button{
+    font-size: $font-size;
+    padding:10px;
+    color:green;
+    background-color: $background-color-btn;
+    cursor: pointer;
+    }
+    
+    .hello-world-text{
+    color:blue
+    }
