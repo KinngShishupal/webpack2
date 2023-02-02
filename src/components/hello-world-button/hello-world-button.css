@@ -7,5 +7,6 @@ cursor: pointer;
 }
 
 .hello-world-text{
-color:blue
+color:blue;
+font-size:20px
 }

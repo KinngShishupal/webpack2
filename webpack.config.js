@@ -1,18 +1,26 @@
 const path = require("path"); // we cannot use import key word in webpack so going the old ways
 const TerserPlugin = require("terser-webpack-plugin"); // it comes with webpack 5, we donot need to install it explicitly
 const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: "./src/index.js", //webpack entry point, webpack will start build process from this file
   output: {
     // file which will be generated as a result of the build process
-    filename: "bundle.js", // this generates bundle.js file in dist folder
+    // filename: "bundle.js", // this generates bundle.js file in dist folder
+    filename: "bundle.[contenthash]js",// content hash creates filename with new name every time, provided content has changed this is helpful in caching
     // path: "./dist", this will not work as absolute path is required not relative path
     path: path.resolve(__dirname, "./dist"),
     // publicPath: "dist/", // it will for static assests in dist folder, this case is bydefault hanlded by webpack 5, no need to specifically mention here
     // publicPath: "https://some-cdn.com", it will look for images at this location
     publicPath: "dist/", // it tells from where the assests should be taken from, in webpack 5 it is by default set to publicPath: "auto"
-  },
+  //  clean:true ,// for cleaning webpack before each build, this is inbuild webpack feature we donot need to use any plugin in this case like clean-webpack-plugin
+// clean:{
+//   //other options for clean
+//   dry:true,
+//   keep:/\.css/, // remove exept .css files,
+// }  
+},
 
   mode: "none",
   module: {
@@ -75,7 +83,8 @@ module.exports = {
   plugins:[
     new TerserPlugin(),
     new MiniCssExtractPlugin({  // to create separate bundle for css files, instead of putting it inside bundle.js. This is done to reduce bundle size and load application faster as both these new files will be downloaded in parallel
-      filename:'styles.css' // we can any name to css file, we need to change  the rule for css and scss style loadera 
-    })
+      filename:'styles.[contenthash].css' // we can any name to css file, we need to change  the rule for css and scss style loadera 
+    }),
+    new CleanWebpackPlugin(), // to remove redundant bundle.js and css files,created due to content hash, before creating new build
   ]
 };

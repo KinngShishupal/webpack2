@@ -1,5 +1,5 @@
 .heading{
-    color:red;
+    color:pink;
     font-size:16px;
   letter-spacing: 5px;
 }
@@ -13,4 +13,5 @@
 
 .hello-world-text {
   color: blue;
+  letter-spacing: 2px;
 }
