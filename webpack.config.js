@@ -1,5 +1,7 @@
 const path = require("path"); // we cannot use import key word in webpack so going the old ways
 const TerserPlugin = require("terser-webpack-plugin"); // it comes with webpack 5, we donot need to install it explicitly
+const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
+
 module.exports = {
   entry: "./src/index.js", //webpack entry point, webpack will start build process from this file
   output: {
@@ -43,12 +45,16 @@ module.exports = {
         // rule for importing css files, here we will use loaders instead of asset module so we will use keyword use instead of type 
         // this rule tells webpack to use css loader and style loader we desire to import css file
         test: /\.css$/,
-        use: ["style-loader",
+        use: [
+          // "style-loader",
+          MiniCssExtractPlugin.loader,//to use MiniCssExtractPlugin plugin to generate separate css file bundle
          "css-loader"]
       },
       {
         test:/\.scss$/, 
-   use: ["style-loader",
+   use: [
+    // "style-loader",
+    MiniCssExtractPlugin.loader, //to use MiniCssExtractPlugin plugin to generate separate css file bundle
          "css-loader",
          "sass-loader" ], // loaders  are invoked from right to left so firt sass loader then css loader then style loader
       },
@@ -67,6 +73,9 @@ module.exports = {
   },
 
   plugins:[
-    new TerserPlugin()
+    new TerserPlugin(),
+    new MiniCssExtractPlugin({  // to create separate bundle for css files, instead of putting it inside bundle.js. This is done to reduce bundle size and load application faster as both these new files will be downloaded in parallel
+      filename:'styles.css' // we can any name to css file, we need to change  the rule for css and scss style loadera 
+    })
   ]
 };
