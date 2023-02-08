@@ -2,18 +2,20 @@ const path = require("path"); // we cannot use import key word in webpack so goi
 const TerserPlugin = require("terser-webpack-plugin"); // it comes with webpack 5, we donot need to install it explicitly
 const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: "./src/index.js", //webpack entry point, webpack will start build process from this file
   output: {
     // file which will be generated as a result of the build process
     // filename: "bundle.js", // this generates bundle.js file in dist folder
-    filename: "bundle.[contenthash]js",// content hash creates filename with new name every time, provided content has changed this is helpful in caching
+    filename: "bundle.[contenthash].js",// content hash creates filename with new name every time, provided content has changed this is helpful in caching
     // path: "./dist", this will not work as absolute path is required not relative path
     path: path.resolve(__dirname, "./dist"),
     // publicPath: "dist/", // it will for static assests in dist folder, this case is bydefault hanlded by webpack 5, no need to specifically mention here
     // publicPath: "https://some-cdn.com", it will look for images at this location
-    publicPath: "dist/", // it tells from where the assests should be taken from, in webpack 5 it is by default set to publicPath: "auto"
+    publicPath:"",
+    // publicPath: "dist/", // it tells from where the assests should be taken from, in webpack 5 it is by default set to publicPath: "auto"
   //  clean:true ,// for cleaning webpack before each build, this is inbuild webpack feature we donot need to use any plugin in this case like clean-webpack-plugin
 // clean:{
 //   //other options for clean
@@ -86,5 +88,8 @@ module.exports = {
       filename:'styles.[contenthash].css' // we can any name to css file, we need to change  the rule for css and scss style loadera 
     }),
     new CleanWebpackPlugin(), // to remove redundant bundle.js and css files,created due to content hash, before creating new build
+   new HtmlWebpackPlugin(), //to dynamically create index.html file as we need to have different path names for js and css files, this actualli create index.html in dist folder itself 
+                            // we also need tpo change public path option  as js  and css files always starts with trhe public path option
+                            // since it is located at the same level we donot need anything in ahead of path
   ]
 };
