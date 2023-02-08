@@ -91,5 +91,13 @@ module.exports = {
    new HtmlWebpackPlugin(), //to dynamically create index.html file as we need to have different path names for js and css files, this actualli create index.html in dist folder itself 
                             // we also need tpo change public path option  as js  and css files always starts with trhe public path option
                             // since it is located at the same level we donot need anything in ahead of path
+
+  // new HtmlWebpackPlugin({
+  //   title:'Hello Shishupal', // to provide title, by default it is webpack app
+  //   filename:'customFile.html', //by default it is index.html, we can also pass folder sysytem like sub/customFile.html
+  //   meta:{
+  //     description: 'i am description', //to add meta tag
+  //   }
+  // }), // we can customize generated html file by passing options 
   ]
 };
