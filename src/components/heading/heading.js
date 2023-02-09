@@ -5,7 +5,7 @@ class Heading {
         const h1 = document.createElement('h1');
         h1.classList.add('heading')
         const body  = document.querySelector('body');
-        h1.innerHTML = 'Webpack Is Awesome';
+        h1.innerHTML = 'Webpack Is Awesome, hurray!!!!';
         body.appendChild(h1)
 }
 }

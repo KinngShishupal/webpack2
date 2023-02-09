@@ -1,5 +1,5 @@
 const path = require("path"); // we cannot use import key word in webpack so going the old ways
-const TerserPlugin = require("terser-webpack-plugin"); // it comes with webpack 5, we donot need to install it explicitly
+// const TerserPlugin = require("terser-webpack-plugin"); // it comes with webpack 5, we donot need to install it explicitly
 const MiniCssExtractPlugin  = require("mini-css-extract-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -9,7 +9,7 @@ module.exports = {
   output: {
     // file which will be generated as a result of the build process
     // filename: "bundle.js", // this generates bundle.js file in dist folder
-    filename: "bundle.[contenthash].js",// content hash creates filename with new name every time, provided content has changed this is helpful in caching
+    filename: "bundle.js",// content hash creates filename with new name every time, provided content has changed this is helpful in caching
     // path: "./dist", this will not work as absolute path is required not relative path
     path: path.resolve(__dirname, "./dist"),
     // publicPath: "dist/", // it will for static assests in dist folder, this case is bydefault hanlded by webpack 5, no need to specifically mention here
@@ -24,7 +24,20 @@ module.exports = {
 // }  
 },
 
-  mode: "none",
+  mode: "development", //none/development/production, default production
+  devServer:{
+// configuration after webpack dev server is installed
+port:9000, // port on which our app will run
+static:{
+  // what should be served on this port
+  directory: path.resolve(__dirname, "./dist")
+},
+devMiddleware:{
+index:'index.html', // which file to be run from this directory
+writeToDisk:true, // by default files are saved to memory not in disk this writes generated files to dist folder
+}
+
+  },
   module: {
     // we will write rules that will tell webpack how to import image files
     rules: [
@@ -56,15 +69,15 @@ module.exports = {
         // this rule tells webpack to use css loader and style loader we desire to import css file
         test: /\.css$/,
         use: [
-          // "style-loader",
-          MiniCssExtractPlugin.loader,//to use MiniCssExtractPlugin plugin to generate separate css file bundle
+          "style-loader", // useful in development
+          // MiniCssExtractPlugin.loader,//to use MiniCssExtractPlugin plugin to generate separate css file bundle useful in production
          "css-loader"]
       },
       {
         test:/\.scss$/, 
    use: [
-    // "style-loader",
-    MiniCssExtractPlugin.loader, //to use MiniCssExtractPlugin plugin to generate separate css file bundle
+    "style-loader",
+    // MiniCssExtractPlugin.loader, //to use MiniCssExtractPlugin plugin to generate separate css file bundle
          "css-loader",
          "sass-loader" ], // loaders  are invoked from right to left so firt sass loader then css loader then style loader
       },
@@ -83,10 +96,10 @@ module.exports = {
   },
 
   plugins:[
-    new TerserPlugin(),
-    new MiniCssExtractPlugin({  // to create separate bundle for css files, instead of putting it inside bundle.js. This is done to reduce bundle size and load application faster as both these new files will be downloaded in parallel
-      filename:'styles.[contenthash].css' // we can any name to css file, we need to change  the rule for css and scss style loadera 
-    }),
+    // new TerserPlugin(), // we donot want to minify our code during development so removing it
+    // new MiniCssExtractPlugin({  // to create separate bundle for css files, instead of putting it inside bundle.js. This is done to reduce bundle size and load application faster as both these new files will be downloaded in parallel
+    //   filename:'styles.css' // we can any name to css file, we need to change  the rule for css and scss style loadera 
+    // }),
     new CleanWebpackPlugin(), // to remove redundant bundle.js and css files,created due to content hash, before creating new build
    new HtmlWebpackPlugin(), //to dynamically create index.html file as we need to have different path names for js and css files, this actualli create index.html in dist folder itself 
                             // we also need tpo change public path option  as js  and css files always starts with trhe public path option
@@ -101,3 +114,11 @@ module.exports = {
   // }), // we can customize generated html file by passing options 
   ]
 };
+
+
+// NOt Reuired in development mode 
+// we donot want to minify our css as it will take extra time to create build during development process
+// so hampers developer experience but very useful in customer experience,
+// tesrsor plugin not requied as we donot want to minify our code
+// content hash not required
+
